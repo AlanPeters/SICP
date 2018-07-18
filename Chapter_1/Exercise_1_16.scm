@@ -11,3 +11,8 @@
   )
 
 (define (is-even n) (= (remainder n 2) 0))
+
+
+
+
+(define (addone a) (+ a 1))
