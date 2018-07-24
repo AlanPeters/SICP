@@ -82,3 +82,52 @@
 (define (exercise_2.2)
   (print-point (midpoint (make-segment (make-point 1 1) (make-point 2 2))))
   )
+
+                                        ;Exercise 2.4
+(define (cons2 x y)
+  (lambda (m) (m x y)))
+(define (car2 z)
+  (z (lambda (p q) p)))
+#|
+(car2 (cons2 1 2))
+((cons2 1 2) (lambda (p q) p))
+((lambda (m) (m 1 2)) (lambda (p q) p))
+((lambda (p q) p ) (1 2))
+1
+|#
+                                        ;Exercise 2.5
+(define (cons3 a b)
+  (* (expt 2 a) (expt 3 b)))
+
+(define (car3 z)
+  (if (even? z)
+      (+ 1 (car3 (/ z 2)))
+      0))
+
+(define (cdr3 z)
+  (if (= (modulo z 3) 0)
+      (+ 1 (cdr3 (/ z 3)))
+      0))
+
+                                        ;Exercise 2.17
+(define (last-pair list)
+  (if (null? (cdr list))
+      (car list)
+      (last-pair (cdr list))))
+
+(define (exercise_2_17)
+  (last-pair (list 23 72 149 34)))
+
+                                        ;Exercise 2.18
+(define (reverse list)
+  (define (reverse-iter list tail)
+    (if (null? (cdr list))
+        (cons (car list) tail)
+        (reverse-iter
+         (cdr list)
+         (cons (car list) tail))
+        ))
+  (reverse-iter list '()))
+
+(define (exercise_2.18)
+  (reverse (list 1 4 9 16 25)))
