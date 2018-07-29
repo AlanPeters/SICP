@@ -169,3 +169,19 @@
   (lambda (f)
     (lambda(x)
       ((a f) ((b f) x)))))
+
+                                        ;Exercise 2.20
+
+(define (same-parity . w)
+  (define (parity-inner test? list)
+    (cond ((null? list) '())
+          ((test? (car list)) (cons (car list) (parity-inner test? (cdr list))))
+          (else (parity-inner test? (cdr list)))))
+  (if (even? (car w))
+      (parity-inner even? w)
+      (parity-inner odd? w)))
+
+(define (exercise_2_20a)
+  (same-parity 1 2 3 4 5 6 7 ))
+(define (exercise_2_20b)
+  (same-parity 2 3 4 5 6 7))
