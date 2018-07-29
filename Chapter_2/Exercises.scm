@@ -131,3 +131,41 @@
 
 (define (exercise_2.18)
   (reverse (list 1 4 9 16 25)))
+
+                                        ;Exercise 2.6
+(define zero
+  (lambda (f)
+    (lambda (x) x)))
+
+(define (add-1 n)
+  (lambda (f)
+    (lambda (x)
+      (f ((n f) x)))))
+
+
+;(lambda (f) (lambda (x) (f ((zero f) x))))
+;(lambda (f) (lambda (x) (f (lambda (f) (lambda (x) x)) f) x))
+;(lambda (f) (lambda (x) (f (lambda (x) x) x))
+;(lambda (f) (lambda (x) (f x))
+
+(define one
+  (lambda (f) (lambda (x) (f x))))
+
+;(lambda (f) (lambda (x) (f ((one f) x))))
+;(lambda (f) (lambda (x) (f (((lambda (f) (lambda (x) (f x))) f) x))))
+;(lambda (f) (lambda (x) (f (f x))))
+
+(define two
+  (lambda (f) (lambda (x) (f (f x)))))
+
+(define (inc n)
+  (+ n 1))
+
+(define (print-church n)
+  (display ((n inc) 0))
+  (newline))
+
+(define (add a b)
+  (lambda (f)
+    (lambda(x)
+      ((a f) ((b f) x)))))
