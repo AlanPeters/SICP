@@ -185,3 +185,114 @@
   (same-parity 1 2 3 4 5 6 7 ))
 (define (exercise_2_20b)
   (same-parity 2 3 4 5 6 7))
+
+                                        ;Exercise 2.21
+(define (square n)
+  (* n n))
+
+(define (square-list1 items)
+  (if (null? items)
+      '()
+      (cons (square (car items)) (square-list1 (cdr items)))))
+
+(define (square-list2 items)
+  (map square items))
+
+(define (exercise_2_21a)
+  (square-list1 (list 1 2 3 4)))
+
+(define (exercise_2_21b)
+  (square-list2 (list 1 2 3 4)))
+
+                                        ;Exercise 2.23
+(define (for-each2 f items)
+  (cond ((not (null? items))
+         (f (car items))
+         (for-each2 f (cdr items)))))
+
+(define (for-each proc list)
+  (cond
+   ((null? list) '())
+   (else (proc (car list))
+         (for-each proc (cdr list)))))
+
+(define (exercise_2_23)
+  (for-each2 (lambda (x) (display x) (newline))
+            (list 57 321 88 )))
+
+                                        ;Exercise 2.24
+(define (exercise_2_24)
+  (list 1 (list 2 (list 3 4))))
+
+                                        ;Exercise 2.25
+(define (exercise_2_25a)
+  (car (cdaddr (list 1 3 (list 5 7) 9))))
+
+(define (exercise_2_25b)
+  (caar (list (list 7))))
+
+(define (exercise_2_25c)
+  (cadadr(cadadr (cadadr (list 1 (list 2 (list 3 (list 4 (list 5 (list 6 7))))))))))
+
+                                        ;Eercise 2.30-1
+(define (map-tree tree function)
+  (map (lambda (sub-tree)
+         (if (pair? sub-tree)
+             (map-tree sub-tree function)
+             (function sub-tree)))
+       tree))
+(define (map-tree_2 tree function)
+  (cond ((null? tree) '())
+        ((not (pair? tree)) (function tree))
+        (else (cons (map-tree_2 (car tree) function)
+                    (map-tree_2 (cdr tree) function)))))
+
+(define (square-tree tree)
+  (map-tree tree square))
+
+(define (square-tree_2 tree)
+  (map-tree_2 tree square))
+
+(define (exercise_2_30)
+  (let ((test-list (list 1
+                         (list 2 (list 3 4) 5)
+                         (list 6 7))))
+    (display
+     (square-tree test-list))
+    (newline)
+    (display
+     (square-tree_2 test-list))
+    (newline)
+    ))
+
+                                        ;Exercise 2.32
+(define (subsets s)
+  (define (inner-func x)
+    (lambda (y)
+      (if (not (null? x))
+          (append y (list x))))
+          )
+  (if (null? s)
+      (list '())
+      (let ((rest (subsets (cdr s))))
+        (append rest (map (inner-func (car s)) rest)))))
+
+                                        ;Exercise 2.33
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+(define (exercise_2_33_a)
+  (define (map p sequence)
+    (accumulate (lambda (x y) (cons (p x) y)) '() sequence))
+  (map square (list 1 2 3))
+  )
+(define (exercise_2_33_b)
+  (define (append seq1 seq2)
+    (accumulate cons seq2 seq1))
+  (append (list 1 2 3) (list 4 5 6)))
+(define (exercise_2_33_c)
+  (define (length sequence)
+    (accumulate (lambda (x y) (+ y 1)) 0 sequence))
+  (length (list 1 2 3)))
